@@ -4,13 +4,16 @@ import * as vscode from 'vscode';
 import * as https from 'https';
 
 let bitcoinItem
+let relativeDifference;
 export function activate(context: vscode.ExtensionContext) {
     bitcoinItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 1);
     bitcoinItem.text = "loading";
     bitcoinItem.show();
-    
-    refresh()
+
+    refresh();
     setInterval(refresh, 60000);
+    context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(refresh))
+
 }
 
 
@@ -18,7 +21,18 @@ export function deactivate() {
 }
 
 function refresh(): void {
+    const config = vscode.workspace.getConfiguration();
+    const relativeConfig = config.get('bitcoinwatcher.relativeDifference', [])
+    relativeDifference = calculateRelativeDifference(relativeConfig);
     createItem()
+}
+function calculateRelativeDifference(input): number {
+    let average;
+    input.forEach(element => {
+        parseInt(element)
+        average =+ element
+    });
+    return average / input.length
 }
 
 function createItem(): void {
@@ -31,7 +45,17 @@ function createItem(): void {
 }
 function updateStatusWithResult(result): void {
     var data = result.usdAverage
-    bitcoinItem.text = data.toString();
+    if (relativeDifference) {
+        bitcoinItem.text = "Bitcoin(USD): " + data.toString();
+        bitcoinItem.tooltip = " RD: " + relativeDifference.toString()
+        if(data > relativeDifference){
+            bitcoinItem.color = "lightgreen"
+        }else{
+            bitcoinItem.color = "tomato"
+        }
+    } else {
+        bitcoinItem.text = "Bitcoin(USD): " + data.toString();
+    }
 }
 
 function httpGet(url): Promise<string> {
