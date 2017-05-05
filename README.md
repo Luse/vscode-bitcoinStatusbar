@@ -1,8 +1,8 @@
-# bitcoinwatcher README
+# Bitcoinwatcher README
 
 Simple extension, just install and enjoy :)
 
-# Options
+### Options
 _see relative difference between current value and the defined value, if multiple values then the average is calculated:_
 bitcoinwatcher.relativeDifference : []
   
