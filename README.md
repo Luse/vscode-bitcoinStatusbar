@@ -8,13 +8,13 @@ ___
 ### Options
 ```
 {
-    //use color to show negative or positive difference between current bitcoin value and the defined value, if multiple values then the average is calculated
+    //Use color to show negative or positive difference between current bitcoin value and the defined value, if multiple values then the average is calculated
     bitcoinwatcher.useRelativeDifference : [<number>],
     
-    //change the displayed currency
+    //Change the displayed currency
     bitcoinwatcher.currency: "<string>" (default: usd) 
     
-    //change the amount of decimals
+    //Change the amount of decimals
     bitcoinwatcher.decimals: <number> (default: 2)
 }
 ```
