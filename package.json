@@ -13,11 +13,12 @@
     "activationEvents": [
         "*"
     ],
+    "icon":"assets/logo.png",
     "main": "./out/src/extension",
     "contributes": {
         "configuration": {
             "properties": {
-                "bitcoinwatcher.relativeDifference": {
+                "bitcoinwatcher.useRelativeDifference": {
                     "type": "array",
                     "default": [],
                     "description": "display relative difference to current price, if more are defined the average will be calculated"
