@@ -2,7 +2,7 @@
     "name": "bitcoinwatcher",
     "displayName": "bitcoinwatcher",
     "description": "simple extension that displays the current bitcoin price in the statusbar",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "publisher": "grayoverride",
     "engines": {
         "vscode": "^1.11.0"
