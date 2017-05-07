@@ -13,7 +13,7 @@
     "activationEvents": [
         "*"
     ],
-    "icon":"assets/logo.png",
+    "icon": "assets/logo.png",
     "main": "./out/src/extension",
     "contributes": {
         "configuration": {
@@ -22,6 +22,16 @@
                     "type": "array",
                     "default": [],
                     "description": "display relative difference to current price, if more are defined the average will be calculated"
+                },
+                "bitcoinwatcher.currency": {
+                    "type": "string",
+                    "default": "usd",
+                    "description": "default bitcoin currency"
+                },
+                "bitcoinwatcher.decimals": {
+                    "type": "number",
+                    "default": 2,
+                    "description": "number of decimals to be displayed"
                 }
             }
         }
