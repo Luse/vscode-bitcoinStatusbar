@@ -68,7 +68,7 @@ function updateStatusWithResult(code, rate): void {
             bitcoinItem.color = "tomato"
         }
     } else {
-        bitcoinItem.text = "Bitcoin(USD): " + data.toString();
+        bitcoinItem.text = "Bitcoin: " + data.toString() + " " + code;
     }
 }
 
