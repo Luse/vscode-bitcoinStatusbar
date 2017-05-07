@@ -22,15 +22,15 @@ export function deactivate() {
 
 function refresh(): void {
     const config = vscode.workspace.getConfiguration();
-    const relativeConfig = config.get('bitcoinwatcher.relativeDifference', [])
+    const relativeConfig = config.get('bitcoinwatcher.useRelativeDifference', [])
     relativeDifference = calculateRelativeDifference(relativeConfig);
     createItem()
 }
 function calculateRelativeDifference(input): number {
-    let average;
+    let average = 0;
     input.forEach(element => {
         parseInt(element)
-        average =+ element
+        average += element
     });
     return average / input.length
 }
