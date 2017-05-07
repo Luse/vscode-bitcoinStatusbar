@@ -8,7 +8,7 @@ ___
 ### Options
 ```
 {
-    //See relative difference between current bitcoin value and the defined value, if multiple values then the average is calculated
+    //use color to show negative or positive difference between current bitcoin value and the defined value, if multiple values then the average is calculated
     bitcoinwatcher.useRelativeDifference : [<number>],
     
     //change the displayed currency
