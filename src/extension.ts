@@ -1,10 +1,12 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import * as https from 'https';
+import * as http from 'http';
 
 let bitcoinItem
 let relativeDifference;
+let currency;
+let decimals;
 export function activate(context: vscode.ExtensionContext) {
     bitcoinItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 1);
     bitcoinItem.text = "loading";
@@ -23,8 +25,15 @@ export function deactivate() {
 function refresh(): void {
     const config = vscode.workspace.getConfiguration();
     const relativeConfig = config.get('bitcoinwatcher.useRelativeDifference', [])
+    const currencyConfig = config.get('bitcoinwatcher.currency', "");
+    decimals = config.get('bitcoinwatcher.decimals');
+
+    currency = setDefaultCurrency(currencyConfig);
     relativeDifference = calculateRelativeDifference(relativeConfig);
     createItem()
+}
+function setDefaultCurrency(val): string {
+    return val.toUpperCase()
 }
 function calculateRelativeDifference(input): number {
     let average = 0;
@@ -36,21 +45,26 @@ function calculateRelativeDifference(input): number {
 }
 
 function createItem(): void {
-    const url = "https://xbtprovider.com/api/rates?currency=eur";
+    const url = "http://api.coindesk.com/v1/bpi/currentprice/" + currency + ".json";
     httpGet(url).then(response => {
         const responseObj = JSON.parse(response)
-        updateStatusWithResult(responseObj.data);
+        updateStatusWithResult(responseObj.bpi[currency].code, responseObj.bpi[currency].rate_float);
     })
-
 }
-function updateStatusWithResult(result): void {
-    var data = result.usdAverage
+
+function userDefinedPrecision(rate): number {
+    return rate.toFixed(decimals);
+}
+
+function updateStatusWithResult(code, rate): void {
+    var data = userDefinedPrecision(rate)
+
     if (relativeDifference) {
-        bitcoinItem.text = "Bitcoin(USD): " + data.toString();
+        bitcoinItem.text = "Bitcoin: " + data.toString() + " " + code;
         bitcoinItem.tooltip = " RD: " + relativeDifference.toString()
-        if(data > relativeDifference){
+        if (data > relativeDifference) {
             bitcoinItem.color = "lightgreen"
-        }else{
+        } else {
             bitcoinItem.color = "tomato"
         }
     } else {
@@ -60,7 +74,7 @@ function updateStatusWithResult(result): void {
 
 function httpGet(url): Promise<string> {
     return new Promise((resolve, reject) => {
-        https.get(url, response => {
+        http.get(url, response => {
             let responseData = '';
             response.on('data', chunk => responseData += chunk);
             response.on('end', () => {
