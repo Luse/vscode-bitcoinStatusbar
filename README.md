@@ -1,8 +1,16 @@
 # Bitcoinwatcher README
 
-Simple extension, just install and enjoy :)
+![alt text](https://github.com/GrayOverride/vscode-bitcoinStatusbar/blob/master/assets/logo.png?raw=true "bitcoinwatcher logo")
 
+This extension allows you to see the current bitcoin value in your statusbar
+___
 ### Options
-_see relative difference between current value and the defined value, if multiple values then the average is calculated:_
-bitcoinwatcher.relativeDifference : []
-  
+```
+{
+    //See relative difference between current bitcoin value and the defined value, if multiple values then the average is calculated
+    bitcoinwatcher.useRelativeDifference : [<number>],
+    //change the displayed currency
+    bitcoinwatcher.currency: "<string>" [default: usd] 
+
+}
+```
