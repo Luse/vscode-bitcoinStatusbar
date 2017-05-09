@@ -4,6 +4,7 @@
 
 This extension allows you to see the current bitcoin value in your statusbar.
 
+![alt text](https://github.com/GrayOverride/vscode-bitcoinStatusbar/blob/master/assets/screenshot.PNG?raw=true "Example: color is from one of the options")
 ___
 ### Options
 ```
