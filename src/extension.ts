@@ -7,6 +7,8 @@ let bitcoinItem
 let relativeDifference;
 let currency;
 let decimals;
+let useRelativeToYesterday;
+let historicalData;
 export function activate(context: vscode.ExtensionContext) {
     bitcoinItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 1);
     bitcoinItem.text = "loading";
@@ -24,17 +26,20 @@ export function deactivate() {
 
 function refresh(): void {
     const config = vscode.workspace.getConfiguration();
-    const relativeConfig = config.get('bitcoinwatcher.useRelativeDifference', [])
+    const relativeConfig = config.get('bitcoinwatcher.useRelativeDifference', []);
     const currencyConfig = config.get('bitcoinwatcher.currency', "");
+    useRelativeToYesterday = config.get('bitcoinwatcher.relativeToYesterday');
     decimals = config.get('bitcoinwatcher.decimals');
 
     currency = setDefaultCurrency(currencyConfig);
     relativeDifference = calculateRelativeDifference(relativeConfig);
     createItem()
 }
+
 function setDefaultCurrency(val): string {
     return val.toUpperCase()
 }
+
 function calculateRelativeDifference(input): number {
     let average = 0;
     input.forEach(element => {
@@ -48,8 +53,24 @@ function createItem(): void {
     const url = "http://api.coindesk.com/v1/bpi/currentprice/" + currency + ".json";
     httpGet(url).then(response => {
         const responseObj = JSON.parse(response)
-        updateStatusWithResult(responseObj.bpi[currency].code, responseObj.bpi[currency].rate_float);
+        updateStatusWithResult(currency, responseObj.bpi[currency].rate_float);
     })
+}
+
+function fetchHistoricalData(url): Promise<string> {
+    return httpGet(url).then(response => {
+        return response
+    })
+}
+
+function relativeToYesterday(input): Promise<any> {
+    if (input) {
+        const url = "http://api.coindesk.com/v1/bpi/historical/close.json?for=yesterday&currency=" + currency
+        return fetchHistoricalData(url).then(response => {
+            const responseObj = JSON.parse(response);
+            return responseObj.bpi[Object.keys(responseObj.bpi)[0]]
+        })
+    }
 }
 
 function userDefinedPrecision(rate): number {
@@ -58,17 +79,27 @@ function userDefinedPrecision(rate): number {
 
 function updateStatusWithResult(code, rate): void {
     var data = userDefinedPrecision(rate)
+    bitcoinItem.text = "Bitcoin: " + data.toString() + " " + code;
+    if (useRelativeToYesterday) {
+        relativeToYesterday(useRelativeToYesterday).then(x => {
+            var val = userDefinedPrecision((rate - x))
+            if (val > 0) {
+                bitcoinItem.text += " (+" + val.toString() + ")";
+                bitcoinItem.color = "lightgreen"
+            } else {
+                bitcoinItem.text += " (" + val.toString() + ")";
+                bitcoinItem.color = "tomato"
+            }
 
+        })
+    }
     if (relativeDifference) {
-        bitcoinItem.text = "Bitcoin: " + data.toString() + " " + code;
         bitcoinItem.tooltip = " RD: " + relativeDifference.toString()
         if (data > relativeDifference) {
             bitcoinItem.color = "lightgreen"
         } else {
             bitcoinItem.color = "tomato"
         }
-    } else {
-        bitcoinItem.text = "Bitcoin: " + data.toString() + " " + code;
     }
 }
 

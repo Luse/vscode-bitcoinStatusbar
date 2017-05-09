@@ -31,12 +31,17 @@
                 "bitcoinwatcher.currency": {
                     "type": "string",
                     "default": "usd",
-                    "description": "default bitcoin currency"
+                    "description": "Default bitcoin currency"
                 },
                 "bitcoinwatcher.decimals": {
                     "type": "number",
                     "default": 2,
-                    "description": "number of decimals to be displayed"
+                    "description": "Number of decimals to be displayed"
+                },
+                "bitcoinwatcher.relativeToYesterday": {
+                    "type": "boolean",
+                    "default":false,
+                    "description": "Show change in value relative to yesterday"
                 }
             }
         }

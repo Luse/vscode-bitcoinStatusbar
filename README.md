@@ -17,6 +17,9 @@ ___
     
     //Change the amount of decimals
     bitcoinwatcher.decimals: <number> (default: 2)
+
+    //see change of value from yesterday
+    bitcoinwatcher.relativeToYesterday : <boolean> (default: false)
 }
 ```
 
