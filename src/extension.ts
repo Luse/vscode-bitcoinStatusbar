@@ -90,14 +90,16 @@ function updateStatusWithResult(code, rate): void {
                 bitcoinItem.text += " (" + val.toString() + ")";
                 bitcoinItem.color = "tomato"
             }
-
         })
     }
     if (relativeDifference) {
-        bitcoinItem.tooltip = " RD: " + relativeDifference.toString()
-        if (data > relativeDifference) {
-            bitcoinItem.color = "lightgreen"
+        //bitcoinItem.tooltip = " RD: " + relativeDifference.toString()
+        var percentage = userDefinedPrecision((rate - relativeDifference) / relativeDifference * 100).toString() + "%";
+        if (rate > relativeDifference) {
+            bitcoinItem.color = "lightgreen";
+            bitcoinItem.text += "(+" + percentage + ")"
         } else {
+            bitcoinItem.text += "(-" + percentage + ")"
             bitcoinItem.color = "tomato"
         }
     }
