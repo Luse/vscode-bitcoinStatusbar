@@ -96,11 +96,11 @@ function updateStatusWithResult(code, rate): void {
         //bitcoinItem.tooltip = " RD: " + relativeDifference.toString()
         var percentage = userDefinedPrecision((rate - relativeDifference) / relativeDifference * 100).toString() + "%";
         if (rate > relativeDifference) {
-            bitcoinItem.color = "MediumVioletRed";
+            bitcoinItem.color = "lightgreen";
             bitcoinItem.text += "(+" + percentage + ")"
         } else {
             bitcoinItem.text += "(-" + percentage + ")"
-            bitcoinItem.color = "tomato"
+            bitcoinItem.color = "LightSalmon"
         }
     }
 }
