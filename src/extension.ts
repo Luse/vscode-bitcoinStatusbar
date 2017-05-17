@@ -88,7 +88,7 @@ function updateStatusWithResult(code, rate): void {
                 bitcoinItem.color = "lightgreen"
             } else {
                 bitcoinItem.text += " (" + val.toString() + ")";
-                bitcoinItem.color = "tomato"
+                bitcoinItem.color = "LightSalmon"
             }
         })
     }
@@ -96,7 +96,7 @@ function updateStatusWithResult(code, rate): void {
         //bitcoinItem.tooltip = " RD: " + relativeDifference.toString()
         var percentage = userDefinedPrecision((rate - relativeDifference) / relativeDifference * 100).toString() + "%";
         if (rate > relativeDifference) {
-            bitcoinItem.color = "lightgreen";
+            bitcoinItem.color = "MediumVioletRed";
             bitcoinItem.text += "(+" + percentage + ")"
         } else {
             bitcoinItem.text += "(-" + percentage + ")"
